@@ -1,0 +1,19 @@
+﻿<%--
+Default skin template. The following skins are provided as examples only.
+
+1. Named control skin. The SkinId should be uniquely defined because
+   duplicate SkinId's per control type are not allowed in the same theme.--%>
+<asp:ImageButton SkinId="questionMark" runat="server" ImageUrl="Images/question.PNG" />
+
+<%--2. Default skin. The SkinId is not defined. Only one default 
+   control skin per control type is allowed in the same theme.--%>  
+<asp:Button runat="server" CssClass="button" /> 
+<asp:TextBox runat="server" CssClass="entry"></asp:TextBox>
+<asp:DropDownList runat="server" CssClass="entry"></asp:DropDownList>
+
+<asp:RequiredFieldValidator runat="server" CssClass="validator"></asp:RequiredFieldValidator>
+<asp:RangeValidator runat="server" CssClass="validator"></asp:RangeValidator>
+<asp:CustomValidator runat="server" CssClass="validator"></asp:CustomValidator>
+<asp:RegularExpressionValidator runat="server" CssClass="validator"></asp:RegularExpressionValidator>
+<asp:ValidationSummary runat="server" CssClass="validator"></asp:ValidationSummary>
+

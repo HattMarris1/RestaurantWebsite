@@ -1,0 +1,33 @@
+﻿/* the styles for the skins */
+.button {
+    background-color: white;
+    font-weight: bold;
+    border: 2px solid #FF6600;
+    padding: .5em;
+}
+.entry {
+    border: 1px solid black;
+}
+.validator {
+    color: #FF6600;
+    font-weight: bold;
+}
+/* the style that puts the banner in the header */
+#banner {
+    width: 100%;
+    height: 102px;
+    background: white url('Images/banner.jpg') no-repeat;
+}
+/* the style that boldfaces the label in the footer */
+#lblDaysUntilHalloween {
+    font-weight: bold;
+}
+.link{
+    border: 2px solid black;
+	padding: .25em .5em;
+	text-decoration: none;
+	display: block;
+}
+section {
+    border-left: 2px solid #FF6600;
+}

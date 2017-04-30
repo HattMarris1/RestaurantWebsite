@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 public partial class Site : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, EventArgs e)
-    {
+    {/*
         //fill 'Days Until' label if it hasn't been overridden
         if (lblDaysUntilHalloween != null)
         {
@@ -26,7 +26,7 @@ public partial class Site : System.Web.UI.MasterPage
                         "There are only {0} days left until Halloween!", daysUntil);
                     break;
             }
-        }
+        }*/
     }
 
     private int DaysUntilHalloween()

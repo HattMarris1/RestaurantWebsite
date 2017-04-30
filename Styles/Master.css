@@ -54,3 +54,18 @@ li {
     font-size: 95%;
     margin-left: 1em;
 }
+nav ul{
+    list-style:none;
+    padding:0;
+    margin:0;
+    float:left;
+    display:block;
+    
+}
+    nav ul li {
+        float: left;
+        margin: auto;
+        margin-right: 50px;
+        margin-left:50px;
+        padding: 0;
+    }

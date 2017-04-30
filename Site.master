@@ -12,8 +12,6 @@
     <header>
        <%-- <img src="Images/banner.jpg" alt="Halloween Store banner" /><br />--%>
         <div id="banner"></div>
-    </header>
-    <aside>
         <nav>
             <ul>
                 <li><asp:HyperLink NavigateUrl="~/Order.aspx" runat="server">Home</asp:HyperLink></li>
@@ -22,7 +20,8 @@
                 <li><asp:HyperLink NavigateUrl="" runat="server">About</asp:HyperLink></li>
             </ul>
         </nav>
-    </aside>
+    </header>
+ 
     <section>
         <form id="form" runat="server">
             <asp:ContentPlaceHolder id="formPlaceHolder" runat="server">        
@@ -32,7 +31,7 @@
     <footer> 
         <asp:ContentPlaceHolder id="footerPlaceHolder" runat="server">
             <%--the default content for the footer that can be overridden--%>     
-            <asp:Label ID="lblDaysUntilHalloween" runat="server"></asp:Label>          
+                    
         </asp:ContentPlaceHolder> 
     </footer>     
 </body>

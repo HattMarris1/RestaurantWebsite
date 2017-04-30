@@ -13,16 +13,16 @@ public partial class Order : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         //bind dropdown on first load; get and show product data on every load        
-        if (!IsPostBack) ddlProducts.DataBind();
+        /*if (!IsPostBack) ddlProducts.DataBind();
         selectedProduct = this.GetSelectedProduct();
         lblName.Text = selectedProduct.Name;
         lblShortDescription.Text = selectedProduct.ShortDescription;
         lblLongDescription.Text = selectedProduct.LongDescription;
         lblUnitPrice.Text = selectedProduct.UnitPrice.ToString("c") + " each";
-        imgProduct.ImageUrl = "Images/Products/" + selectedProduct.ImageFile;
+        imgProduct.ImageUrl = "Images/Products/" + selectedProduct.ImageFile;*/
     }
 
-    private Product GetSelectedProduct()
+   /* private Product GetSelectedProduct()
     {
         //get row from SqlDataSource based on value in dropdownlist
         DataView productsTable = (DataView)
@@ -40,7 +40,7 @@ public partial class Order : System.Web.UI.Page
         p.UnitPrice = (decimal)row["UnitPrice"];
         p.ImageFile = row["ImageFile"].ToString();
         return p;
-    }
+    }*/
 
     protected void btnAdd_Click(object sender, EventArgs e)
     {
@@ -53,12 +53,11 @@ public partial class Order : System.Web.UI.Page
             //if item isn’t in cart, add it; otherwise, increase its quantity
             if (cartItem == null)
             {
-                cart.AddItem(selectedProduct,
-                             Convert.ToInt32(txtQuantity.Text));
+                //cart.AddItem(selectedProduct,Convert.ToInt32(txtQuantity.Text));
             }
             else
             {
-                cartItem.AddQuantity(Convert.ToInt32(txtQuantity.Text));
+               // cartItem.AddQuantity(Convert.ToInt32(txtQuantity.Text));
             }
             Response.Redirect("Cart.aspx");
         }

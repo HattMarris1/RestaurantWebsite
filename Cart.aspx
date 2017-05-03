@@ -14,7 +14,7 @@
         <asp:Button ID="btnEmpty" runat="server" CssClass="button" Text="Empty Cart" OnClick="btnEmpty_Click" />               
     </div>
     <div id="shopbuttons">              
-        <asp:Button ID="btnContinue" runat="server" CssClass="button" PostBackUrl="~/Order.aspx" Text="Continue Shopping" />
+        <asp:Button ID="btnContinue" runat="server" CssClass="button" PostBackUrl="~/Order.aspx" Text="Continue Shopping" OnClick="btnContinue_Click" />
         <asp:Button ID="btnCheckOut" runat="server" CssClass="button" Text="Check Out" OnClick="btnCheckOut_Click" /><br /><br />
     </div>
     <asp:Label ID="lblMessage" runat="server" EnableViewState="False"></asp:Label><br />      

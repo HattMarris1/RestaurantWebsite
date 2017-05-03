@@ -64,4 +64,9 @@ public partial class Cart : System.Web.UI.Page
     {
         lblMessage.Text = "That page hasn't been implemented yet.";
     }
+
+    protected void btnContinue_Click(object sender, EventArgs e)
+    {
+
+    }
 }

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
+using System.Data.SqlClient;
 
 public partial class Order : System.Web.UI.Page
 {
@@ -13,13 +14,45 @@ public partial class Order : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         //bind dropdown on first load; get and show product data on every load        
-        /*if (!IsPostBack) ddlProducts.DataBind();
-        selectedProduct = this.GetSelectedProduct();
+        if (!IsPostBack)
+        {
+           DataTable itemDetails= getAllMenuItems();
+            foreach (DataRow row in itemDetails.Rows)
+            {
+                Panel p = new Panel();
+                Label nameLabel = new Label();
+                nameLabel.Text = row["Name"].ToString();
+
+                Image img = new Image();
+                img.ImageUrl = "Images/MenuItems/" + row["Image"];
+                img.Width = 100;
+                img.Height = 100;
+                p.Controls.Add(img);
+                p.Controls.Add(nameLabel);
+                this.Controls.Add(p);
+               
+            }
+        };
+       /* selectedProduct = this.GetSelectedProduct();
         lblName.Text = selectedProduct.Name;
         lblShortDescription.Text = selectedProduct.ShortDescription;
         lblLongDescription.Text = selectedProduct.LongDescription;
         lblUnitPrice.Text = selectedProduct.UnitPrice.ToString("c") + " each";
         imgProduct.ImageUrl = "Images/Products/" + selectedProduct.ImageFile;*/
+    }
+
+    private DataTable getAllMenuItems()
+    {
+        SqlConnection conn = new SqlConnection();
+        string connstring = "Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\\RestaurantDB.mdf; Integrated Security = True";
+        conn.ConnectionString = connstring;
+        conn.Open();
+        string itemGet = "SELECT * FROM MenuItem";
+        SqlDataAdapter adapter = new SqlDataAdapter();
+        adapter.SelectCommand = new SqlCommand(itemGet, conn);
+        DataTable dt = new DataTable();
+        adapter.Fill(dt);
+        return dt;
     }
 
    /* private Product GetSelectedProduct()

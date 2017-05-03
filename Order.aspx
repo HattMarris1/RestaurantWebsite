@@ -6,6 +6,9 @@
 </asp:Content>
 
 <asp:Content ID="formContent" ContentPlaceHolderID="formPlaceHolder" Runat="Server">
-   
+    <aside>
+
+   </aside>
+    <asp:Panel ID="Panel1" runat="server"></asp:Panel>
 </asp:Content>
 

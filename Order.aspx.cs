@@ -9,17 +9,19 @@ using System.Data.SqlClient;
 
 public partial class Order : System.Web.UI.Page
 {
-    private Product selectedProduct;
+    private MenuItem selectedProduct;
+    private string connstring = "Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\\RestaurantDB.mdf; Integrated Security = True";
 
     protected void Page_Load(object sender, EventArgs e)
     {
         //bind dropdown on first load; get and show product data on every load        
         if (!IsPostBack)
         {
-           DataTable itemDetails= getAllMenuItems();
+           DataTable itemDetails= getMenuItems("SELECT * FROM MenuItem");
             foreach (DataRow row in itemDetails.Rows)
             {
                 Panel p = new Panel();
+                p.ID = row["id"].ToString();
                 Label nameLabel = new Label();
                 nameLabel.Text = row["Name"].ToString();
 
@@ -29,7 +31,12 @@ public partial class Order : System.Web.UI.Page
                 img.Height = 100;
                 p.Controls.Add(img);
                 p.Controls.Add(nameLabel);
-                this.Controls.Add(p);
+                Button btn = new Button();
+
+                btn.Attributes.Add("OnClick", "\"Btn_Click\""); //new EventHandler(this.btnAdd_Click);
+                p.Controls.Add(btn);
+                
+                MenuItemContainer.Controls.Add(p);
                
             }
         };
@@ -41,18 +48,30 @@ public partial class Order : System.Web.UI.Page
         imgProduct.ImageUrl = "Images/Products/" + selectedProduct.ImageFile;*/
     }
 
-    private DataTable getAllMenuItems()
+    private void Btn_Click(object sender, EventArgs e)
+    {
+        throw new NotImplementedException();
+    }
+
+    private DataTable getMenuItems(string itemGet)
     {
         SqlConnection conn = new SqlConnection();
-        string connstring = "Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\\RestaurantDB.mdf; Integrated Security = True";
         conn.ConnectionString = connstring;
         conn.Open();
-        string itemGet = "SELECT * FROM MenuItem";
         SqlDataAdapter adapter = new SqlDataAdapter();
         adapter.SelectCommand = new SqlCommand(itemGet, conn);
         DataTable dt = new DataTable();
         adapter.Fill(dt);
         return dt;
+    }
+
+    private MenuItem dataTableToMenuItem(DataTable dt)
+    {
+        MenuItem menuItem = new MenuItem();
+        menuItem.MenuItemID = dt.Rows[0]["id"].ToString();
+        menuItem.Name = dt.Rows[0]["Name"].ToString();
+        menuItem.UnitPrice =Convert.ToInt32(dt.Rows[0]["price"]);
+        return menuItem;
     }
 
    /* private Product GetSelectedProduct()
@@ -79,18 +98,24 @@ public partial class Order : System.Web.UI.Page
     {
         if (Page.IsValid)
         {
+            int itemID;
+            Button clickedButton = (Button)sender;
+            Panel clickedPanel = (Panel)clickedButton.Parent;
+            itemID = Convert.ToInt32(clickedPanel.ID);
             //get cart from session and selected item from cart
             CartItemList cart = CartItemList.GetCart();
-            CartItem cartItem = cart[selectedProduct.ProductID];
-
+            CartItem cartItem = cart[itemID];
+            
             //if item isn’t in cart, add it; otherwise, increase its quantity
             if (cartItem == null)
             {
-                //cart.AddItem(selectedProduct,Convert.ToInt32(txtQuantity.Text));
+                DataTable dt = getMenuItems("Select * from MenuItem where id ='" + itemID+"'");
+                MenuItem m = dataTableToMenuItem(dt);
+                cart.AddItem(m,1);
             }
             else
             {
-               // cartItem.AddQuantity(Convert.ToInt32(txtQuantity.Text));
+                cartItem.AddQuantity(1);
             }
             Response.Redirect("Cart.aspx");
         }

@@ -2,14 +2,14 @@ public class CartItem
 {
     //create empty object or add values on creation
     public CartItem() { }
-    public CartItem(Product product, int quantity)
+    public CartItem(MenuItem product, int quantity)
     {
-        this.Product = product;
+        this.menuItem = product;
         this.Quantity = quantity;
     }
 
     //public properties
-    public Product Product { get; set; }
+    public MenuItem menuItem { get; set; }
     public int Quantity { get; set; }
 
     //add to quantity
@@ -22,8 +22,8 @@ public class CartItem
     public string Display()
     {        
         string display = string.Format("{0} ({1} at {2} each)",
-            Product.Name, Quantity.ToString(),
-            Product.UnitPrice.ToString("c"));
+            menuItem.Name, Quantity.ToString(),
+            menuItem.UnitPrice.ToString("c"));
         return display;
     }
 }

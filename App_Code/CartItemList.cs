@@ -23,7 +23,7 @@ public class CartItemList
     }
     public CartItem this[string id] {
         get {
-            return cartItems.FirstOrDefault(c => c.Product.ProductID == id);
+            return cartItems.FirstOrDefault(c => c.menuItem.MenuItemID == id);
         }
     }
 
@@ -36,7 +36,7 @@ public class CartItemList
     }
 
     //add, remove and clear internal list item(s)
-    public void AddItem(Product product, int quantity) {
+    public void AddItem(MenuItem product, int quantity) {
         CartItem c = new CartItem(product, quantity);
         cartItems.Add(c);
     }

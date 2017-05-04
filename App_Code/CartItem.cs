@@ -6,16 +6,18 @@ public class CartItem
     {
         this.menuItem = product;
         this.Quantity = quantity;
+        this.price += menuItem.UnitPrice;
     }
 
     //public properties
     public MenuItem menuItem { get; set; }
     public int Quantity { get; set; }
-
+    public decimal price { get; set; }
     //add to quantity
     public void AddQuantity(int quantity)
     {
         this.Quantity += quantity;
+        this.price += menuItem.UnitPrice;
     }
 
     //display item's property values

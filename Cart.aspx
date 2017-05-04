@@ -7,15 +7,17 @@
 
 <asp:Content ID="formContent" ContentPlaceHolderID="formPlaceHolder" Runat="Server">
     <h1>Your Shopping Cart</h1>
-    <asp:ListBox ID="lstCart" runat="server"></asp:ListBox>
+    <asp:ListBox ID="lstCart" runat="server" Width="540px"></asp:ListBox>
     <div id="cartbuttons">               
         <asp:Button ID="btnRemove" runat="server" CssClass="button" Text="Remove Item" OnClick="btnRemove_Click" />
         <br />
         <asp:Button ID="btnEmpty" runat="server" CssClass="button" Text="Empty Cart" OnClick="btnEmpty_Click" />               
+        <asp:Label ID="costLabel" runat="server" Text="Label"></asp:Label>
     </div>
     <div id="shopbuttons">              
         <asp:Button ID="btnContinue" runat="server" CssClass="button" PostBackUrl="~/Order.aspx" Text="Continue Shopping" OnClick="btnContinue_Click" />
-        <asp:Button ID="btnCheckOut" runat="server" CssClass="button" Text="Check Out" OnClick="btnCheckOut_Click" /><br /><br />
+        <br />
+        <asp:Button ID="btnCheckOut" runat="server" CssClass="button" Text="Check Out" OnClick="btnCheckOut_Click" /><br />
     </div>
     <asp:Label ID="lblMessage" runat="server" EnableViewState="False"></asp:Label><br />      
 </asp:Content>

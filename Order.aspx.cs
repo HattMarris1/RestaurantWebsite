@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
+using System.Web.UI.HtmlControls;
 
 public partial class Order : System.Web.UI.Page
 {
@@ -15,63 +16,111 @@ public partial class Order : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         //bind dropdown on first load; get and show product data on every load        
-        if (!IsPostBack)
+        /*   if (!IsPostBack)
+           {
+              DataTable itemDetails= getMenuItems("SELECT * FROM MenuItem");
+               foreach (DataRow row in itemDetails.Rows)
+               {
+                   Panel p = new Panel();
+                   p.ID = row["id"].ToString();
+                   Label nameLabel = new Label();
+                   nameLabel.Text = row["Name"].ToString();
+
+                   Image img = new Image();
+                   img.ImageUrl = "Images/MenuItems/" + row["Image"];
+                   img.Width = 100;
+                   img.Height = 100;
+                   p.Controls.Add(img);
+                   p.Controls.Add(nameLabel);
+                   Button btn = new Button();
+
+                   LinkButton cartBtn = new LinkButton();
+                   cartBtn.Attributes.Add("class", "fa fa-cart-plus btn menu__item-add");
+                   cartBtn.Attributes.Add("ItemDetails", "");
+                   cartBtn.Attributes.Add("aria-hidden", "true");
+                   cartBtn.Click += new EventHandler(btnAdd_Click);
+                   cartBtn.Text = "<span class=\"sr-only\">Add to Basket</span>";
+                   p.Controls.Add(cartBtn);
+
+                   MenuItemContainer.Controls.Add(p);
+
+               }
+           };
+           */
+        SqlConnection conn = new SqlConnection(connstring); 
+        conn.Open();
+        SqlCommand sqlcmd = new SqlCommand("SELECT * FROM MenuItem", conn);
+        SqlDataReader theReader = sqlcmd.ExecuteReader();
+        if (theReader.HasRows)
         {
-           DataTable itemDetails= getMenuItems("SELECT * FROM MenuItem");
-            foreach (DataRow row in itemDetails.Rows)
+            while (theReader.Read())
             {
-                Panel p = new Panel();
-                p.ID = row["id"].ToString();
-                Label nameLabel = new Label();
-                nameLabel.Text = row["Name"].ToString();
+                MenuItem mi = readerToMenuItem(theReader);
+                                        
+                HtmlGenericControl li = new HtmlGenericControl("li");
+                li.Attributes.Add("class", "food-menu__item");
+                li.Attributes.Add("id", mi.MenuItemID.ToString());
 
-                Image img = new Image();
-                img.ImageUrl = "Images/MenuItems/" + row["Image"];
-                img.Width = 100;
-                img.Height = 100;
-                p.Controls.Add(img);
-                p.Controls.Add(nameLabel);
-                Button btn = new Button();
+                HtmlGenericControl titleSpan = new HtmlGenericControl("span");
+                titleSpan.Attributes.Add("class", "menu__item-title");
+                titleSpan.InnerText = mi.Name;
+                /*
+                if ((bool)theReader["isVeg"])
+                {
+                    HtmlGenericControl vegIcon = new HtmlGenericControl("i");
+                    vegIcon.Attributes.Add("class", "icon icon-leaf");
+                    titleSpan.Controls.Add(vegIcon);
+                }*/
 
-                btn.Attributes.Add("OnClick", "\"Btn_Click\""); //new EventHandler(this.btnAdd_Click);
-                p.Controls.Add(btn);
-                
-                MenuItemContainer.Controls.Add(p);
-               
+                HtmlGenericControl priceSpan = new HtmlGenericControl("span");
+                priceSpan.Attributes.Add("class", "menu__item-price");
+                decimal price = mi.UnitPrice;
+                priceSpan.InnerHtml = price.ToString("c");
+
+                Button addButton = new Button();
+                addButton.Attributes.Add("class", "fa fa-cart-plus btn menu__item-add");
+                addButton.Attributes.Add("ItemID", mi.MenuItemID);
+                addButton.Attributes.Add("aria-hidden", "true");
+                addButton.Click += new EventHandler(btnAdd_Click);
+                addButton.Text = "<span class=\"sr-only\">Add to Basket</span>";
+
+                li.Controls.Add(titleSpan);
+                li.Controls.Add(priceSpan);
+                li.Controls.Add(addButton);
+
+                menu.Controls.Add(li);
             }
-        };
-       /* selectedProduct = this.GetSelectedProduct();
-        lblName.Text = selectedProduct.Name;
-        lblShortDescription.Text = selectedProduct.ShortDescription;
-        lblLongDescription.Text = selectedProduct.LongDescription;
-        lblUnitPrice.Text = selectedProduct.UnitPrice.ToString("c") + " each";
-        imgProduct.ImageUrl = "Images/Products/" + selectedProduct.ImageFile;*/
+        }
     }
+    
+        /* selectedProduct = this.GetSelectedProduct();
+         lblName.Text = selectedProduct.Name;
+         lblShortDescription.Text = selectedProduct.ShortDescription;
+         lblLongDescription.Text = selectedProduct.LongDescription;
+         lblUnitPrice.Text = selectedProduct.UnitPrice.ToString("c") + " each";
+         imgProduct.ImageUrl = "Images/Products/" + selectedProduct.ImageFile;*/
+    
 
     private void Btn_Click(object sender, EventArgs e)
     {
         throw new NotImplementedException();
     }
 
-    private DataTable getMenuItems(string itemGet)
+    private MenuItem readerToMenuItem( SqlDataReader theReader)
     {
-        SqlConnection conn = new SqlConnection();
-        conn.ConnectionString = connstring;
-        conn.Open();
-        SqlDataAdapter adapter = new SqlDataAdapter();
-        adapter.SelectCommand = new SqlCommand(itemGet, conn);
-        DataTable dt = new DataTable();
-        adapter.Fill(dt);
-        return dt;
-    }
-
-    private MenuItem dataTableToMenuItem(DataTable dt)
-    {
-        MenuItem menuItem = new MenuItem();
-        menuItem.MenuItemID = dt.Rows[0]["id"].ToString();
-        menuItem.Name = dt.Rows[0]["Name"].ToString();
-        menuItem.UnitPrice =Convert.ToInt32(dt.Rows[0]["price"]);
-        return menuItem;
+        if (theReader.HasRows)
+        {
+            MenuItem menuItem = new MenuItem();
+            menuItem.MenuItemID = theReader["Id"].ToString();
+            menuItem.Name = theReader["Name"].ToString();
+            menuItem.UnitPrice = Convert.ToInt32(theReader["price"]);
+            return menuItem;
+        }
+        else
+        {
+            return null;
+        }
+        
     }
 
    /* private Product GetSelectedProduct()
@@ -98,10 +147,9 @@ public partial class Order : System.Web.UI.Page
     {
         if (Page.IsValid)
         {
-            int itemID;
+            string itemID;
             Button clickedButton = (Button)sender;
-            Panel clickedPanel = (Panel)clickedButton.Parent;
-            itemID = Convert.ToInt32(clickedPanel.ID);
+            itemID = clickedButton.Attributes["ItemID"];
             //get cart from session and selected item from cart
             CartItemList cart = CartItemList.GetCart();
             CartItem cartItem = cart[itemID];
@@ -109,9 +157,15 @@ public partial class Order : System.Web.UI.Page
             //if item isn’t in cart, add it; otherwise, increase its quantity
             if (cartItem == null)
             {
-                DataTable dt = getMenuItems("Select * from MenuItem where id ='" + itemID+"'");
-                MenuItem m = dataTableToMenuItem(dt);
-                cart.AddItem(m,1);
+             SqlConnection conn = new SqlConnection(connstring);
+             conn.Open();
+              int id=  Convert.ToInt32(itemID);
+             SqlCommand sqlcmd = new SqlCommand("SELECT * FROM MenuItem where Id ="+id, conn);
+             SqlDataReader theReader = sqlcmd.ExecuteReader();
+
+             theReader.Read();
+             MenuItem m = readerToMenuItem(theReader);
+             cart.AddItem(m,1);
             }
             else
             {

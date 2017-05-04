@@ -11,6 +11,11 @@ public partial class Cart : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        //takes the user to the login page if they're not logged in
+        if ((bool)Session["loggedIn"] != true)
+        {
+            Response.Redirect("LoginPage.aspx");
+        }
         //retrieve cart object from session on every post back
         cart = CartItemList.GetCart();
 
@@ -25,12 +30,15 @@ public partial class Cart : System.Web.UI.Page
     {
         //remove all current items from list control
         lstCart.Items.Clear();
+        decimal subtotal = 0;
 
         //loop cart and add each item's Display value to the control
         for (int i = 0; i < cart.Count; i++)
         {
             lstCart.Items.Add(this.cart[i].Display());
+            subtotal += this.cart[i].price;
         }
+        costLabel.Text = subtotal.ToString("c");
     }
 
     protected void btnRemove_Click(object sender, EventArgs e)

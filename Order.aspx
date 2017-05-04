@@ -12,7 +12,9 @@
     <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT [Name], [IsVeg], [Image], [IsNew] FROM [MenuItem]"></asp:SqlDataSource>
     <asp:Panel ID="MenuItemContainer" runat="server" DataSourceID="SqlDataSource1">
         <asp:Button ID="Button1" runat="server" Text="Button" OnClick="btnAdd_Click" />
+        <ul id ="menu" runat ="server">
 
+        </ul>
     </asp:Panel>
 </asp:Content>
 

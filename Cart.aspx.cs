@@ -12,7 +12,7 @@ public partial class Cart : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         //takes the user to the login page if they're not logged in
-        if ((bool)Session["loggedIn"] != true)
+        if ((Session["loggedIn"] == null) || (bool)Session["loggedIn"] == false) 
         {
             Response.Redirect("LoginPage.aspx");
         }

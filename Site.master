@@ -18,6 +18,7 @@
                 <li><asp:HyperLink NavigateUrl="~/Cart.aspx" runat="server">Your Cart</asp:HyperLink></li>
                 <li><asp:HyperLink NavigateUrl="" runat="server">Services</asp:HyperLink></li>
                 <li><asp:HyperLink NavigateUrl="" runat="server">About</asp:HyperLink></li>
+                <li runat="server"><asp:Button ID="LogoutButton" runat="server" Text="Log out" OnClick="LogoutButton_Click" /></li>
             </ul>
         </nav>
     </header>

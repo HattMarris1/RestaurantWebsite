@@ -82,7 +82,7 @@ public partial class Order : System.Web.UI.Page
                 addButton.Attributes.Add("ItemID", mi.MenuItemID);
                 addButton.Attributes.Add("aria-hidden", "true");
                 addButton.Click += new EventHandler(btnAdd_Click);
-                addButton.Text = "<span class=\"sr-only\">Add to Basket</span>";
+                addButton.Text = "Add to Basket";
 
                 li.Controls.Add(titleSpan);
                 li.Controls.Add(priceSpan);

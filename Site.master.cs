@@ -8,7 +8,17 @@ using System.Web.UI.WebControls;
 public partial class Site : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, EventArgs e)
-    {/*
+    {
+        //check if the "loggedIn" session state is false or not set
+        if (!((Session["loggedIn"] == null) || (bool)Session["loggedIn"] == false))
+        {
+            LogoutButton.Visible = false;
+        }
+        else
+        {
+            LogoutButton.Visible = true;
+        }
+        /*
         //fill 'Days Until' label if it hasn't been overridden
         if (lblDaysUntilHalloween != null)
         {
@@ -36,5 +46,10 @@ public partial class Site : System.Web.UI.MasterPage
             halloween = halloween.AddYears(1);
         TimeSpan ts = halloween - DateTime.Today;
         return ts.Days;
+    }
+
+    protected void LogoutButton_Click(object sender, EventArgs e)
+    {
+
     }
 }

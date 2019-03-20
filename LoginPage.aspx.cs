@@ -12,7 +12,7 @@ public partial class LoginPage : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         //check if the "loggedIn" session state is false or not set
-        if ((bool)Session["loggedIn"] == true)
+        if (!((Session["loggedIn"] == null) || (bool)Session["loggedIn"] == false))
         {
             Response.Redirect("Order.aspx");
         }
